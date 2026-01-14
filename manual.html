@@ -1,0 +1,930 @@
+<!doctype html>
+<!-- FONT+1PX hotfix 2026-01-13 21:17:57 -->
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Protocolo Sinapsis V09 — Manual del Usuario</title>
+  <style>
+    :root{
+      --blue:#0B63CE;
+      --orange:#FF6B00;
+      --ink:#0E1A2B;
+      --muted:#5B6B82;
+      --line:#E7EDF6;
+      --bg:#FFFFFF;
+      --soft:#F7FAFF;
+      --soft2:#FBFCFF;
+      --shadow: 0 10px 30px rgba(10,25,50,.08);
+      --radius: 16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color:var(--ink);
+      background:var(--bg);
+    }
+    a{color:var(--blue); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      background:rgba(255,255,255,.92);
+      backdrop-filter:saturate(160%) blur(10px);
+      border-bottom:1px solid var(--line);
+    }
+    .topbar-inner{
+      max-width:1200px; margin:0 auto;
+      padding:14px 16px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .brand{display:flex; align-items:center; gap:12px}
+    .logo{
+      width:42px; height:42px; border-radius:14px;
+      background:linear-gradient(135deg, rgba(11,99,206,.16), rgba(255,107,0,.14));
+      border:1px solid var(--line);
+      display:grid; place-items:center;
+      font-weight:1000; color:var(--blue);
+      box-shadow: var(--shadow);
+      user-select:none;
+    }
+    .brand-title{line-height:1.1}
+    .brand-title .ac{font-weight:1000; letter-spacing:.2px; font-size:17px}
+    .brand-title .ac .activa{color:var(--blue)}
+    .brand-title .ac .consultores{color:var(--orange)}
+    .brand-title .ps{font-weight:900; font-size:13px; color:var(--muted); margin-top:3px}
+    .cta{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px;
+      border:1px solid var(--line);
+      background:var(--soft2);
+      color:var(--ink);
+      font-weight:900; font-size:13px;
+    }
+    .pill strong{color:var(--blue)}
+    .wrap{
+      max-width:1200px; margin:0 auto;
+      display:grid;
+      grid-template-columns: 290px 1fr;
+      gap:18px;
+      padding:18px 16px 60px;
+    }
+    .wrap > section{ grid-column: 2; }
+    .wrap > .content{ grid-column: 2; }
+    @media (max-width: 980px){
+      .wrap{grid-template-columns: 1fr}
+      .wrap > section{ grid-column: 1; }
+      .wrap > .content{ grid-column: 1; }
+      .side{position:relative; top:auto}
+    }
+    .side{
+      position:sticky; top:74px; align-self:start;
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--soft), #fff);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .side-head{
+      padding:14px 14px 10px;
+      border-bottom:1px solid var(--line);
+    }
+    .side-head h2{margin:0; font-size:15px; letter-spacing:.2px}
+    .search{
+      width:100%;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      outline:none;
+      background:#fff;
+      font-size:14px;
+    }
+    .hint{font-size:13px; color:var(--muted); margin-top:8px; line-height:1.35}
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size:13px;
+      padding:2px 6px;
+      border:1px solid var(--line);
+      border-bottom-color:#dbe4f3;
+      border-radius:8px;
+      background:#fff;
+      color:var(--ink);
+      font-weight:900;
+      white-space:nowrap;
+    }
+    .nav{padding:10px; display:flex; flex-direction:column; gap:6px}
+    .nav a{
+      display:block;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid transparent;
+      color:var(--blue);
+      font-weight:900;
+      font-size:15px;
+      letter-spacing:.1px;
+    }
+    .nav a:hover{
+      background: rgba(11,99,206,.06);
+      border-color: rgba(11,99,206,.14);
+      text-decoration:none;
+    }
+    .nav a.active{
+      background: rgba(11,99,206,.08);
+      border-color: rgba(11,99,206,.20);
+    }
+
+    .hero{
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(11,99,206,.08), rgba(255,107,0,.06));
+      box-shadow: var(--shadow);
+      padding:18px;
+    }
+    .hero h1{margin:0; font-size:29px}
+    .hero p{margin:10px 0 0; color:var(--muted); line-height:1.55}
+    .meta{margin-top:14px; display:flex; gap:10px; flex-wrap:wrap}
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-weight:900; font-size:14px;
+      cursor:pointer;
+    }
+    .btn.primary{
+      border-color: rgba(11,99,206,.35);
+      background: rgba(11,99,206,.08);
+      color: var(--blue);
+    }
+    .btn.orange{
+      border-color: rgba(255,107,0,.35);
+      background: rgba(255,107,0,.08);
+      color: var(--orange);
+    }
+
+    section{
+      margin-top:18px;
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      background:#fff;
+      box-shadow: var(--shadow);
+      padding:18px;
+      scroll-margin-top: 90px;
+    }
+    .sec-title{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap}
+    .sec-title h2{margin:0; font-size:21px}
+    .tag{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:7px 10px;
+      border-radius:999px;
+      font-weight:900; font-size:13px;
+      border:1px solid var(--line);
+      background: var(--soft2);
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .lead{margin:10px 0 0; color:var(--muted); line-height:1.6}
+    .grid{display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-top:12px}
+    @media (max-width: 980px){ .grid{grid-template-columns:1fr} }
+    .card{
+      border:1px solid var(--line);
+      border-radius: 14px;
+      padding:12px;
+      background: linear-gradient(180deg, var(--soft2), #fff);
+    }
+    .card h3{margin:0 0 6px; font-size:15px}
+    .card p{margin:0; color:var(--muted); line-height:1.5; font-size:14px}
+    .callout{
+      margin-top:12px;
+      padding:12px;
+      border-radius:14px;
+      border:1px dashed rgba(11,99,206,.25);
+      background: rgba(11,99,206,.05);
+      color: var(--ink);
+      font-size:14px;
+      line-height:1.55;
+    }
+    .callout strong{color:var(--blue)}
+    .callout.orange{
+      border-color: rgba(255,107,0,.35);
+      background: rgba(255,107,0,.06);
+    }
+    .steps{
+      margin:10px 0 0;
+      padding-left:18px;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
+    }
+    .steps li{margin:6px 0}
+    .divider{height:1px; background:var(--line); margin:12px 0}
+    .foot{margin-top:16px; text-align:center; color:var(--muted); font-size:13px}
+    .badge{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:900; font-size:13px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--ink);
+    }
+    .badge .dot{width:8px; height:8px; border-radius:999px; background:var(--blue)}
+  
+    .shotbox{
+      border:1px solid var(--line);
+      border-radius: 14px;
+      padding:12px;
+      background: linear-gradient(180deg, var(--soft2), #fff);
+    }
+    .shotbox .row{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap}
+    .shotbox .title{font-weight:1000; font-size:14px}
+    .shotbox .small{font-size:13px; color:var(--muted)}
+    .shotbox input[type="file"]{font-size:13px}
+    .shotbox img{
+      width:100%;
+      max-height:240px;
+      object-fit:cover;
+      border-radius:12px;
+      border:1px solid var(--line);
+      margin-top:10px;
+      background:#fff;
+    }
+    .shot-actions{display:flex; gap:8px; align-items:center}
+    .mini{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 10px; border-radius:12px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-weight:900; font-size:13px;
+      cursor:pointer;
+    }
+    .mini.danger{border-color: rgba(255,107,0,.35); background: rgba(255,107,0,.06); color: var(--orange)}
+    
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="logo" aria-label="Activa Consultores">AC</div>
+        <div class="brand-title">
+          <div class="ac"><span class="activa">Activa</span> <span class="consultores">Consultores</span></div>
+          <div class="ps">Protocolo Sinapsis V09 — Manual del Usuario</div>
+        </div>
+      </div>
+      <div class="cta">
+        <span class="pill">📍 Mapas <strong>OSM</strong> (sin key)</span>
+        <span class="pill">⚠️ Predictivo <strong>Riesgo + MTBF</strong></span>
+        <a class="pill" href="#inicio">⬆️ Inicio</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap" id="inicio">
+    <aside class="side">
+      <div class="side-head">
+        <h2>🧭 Manual por módulos</h2>
+        <input id="navSearch" class="search" placeholder="Buscar… (ej: ticket, MTBF, export)" />
+        <div class="hint">
+          Zoom en mapas: <span class="kbd">Ctrl</span> + rueda (evita que se mueva toda la página).
+        </div>
+      </div>
+      <nav class="nav" id="nav">
+        <a href="#quickstart">Ruta rápida (10 min)</a>
+        <a href="#nomenclaturas">Nomenclaturas</a>
+        <a href="#home">Módulo Home</a>
+        <a href="#proyectos">Proyectos & Tareas</a>
+        <a href="#evops">EV Ops Carga</a>
+        <a href="#predictivo">Monitor Predictivo</a>
+        <a href="#mtbf">MTBF (Resiliencia)</a>
+        <a href="#datahub">EV Data Hub</a>
+        <a href="#kpi">KPI Analytics</a>
+        <a href="#cache">Sinapsis Neural Cache</a>
+        <a href="#crosspoll">Cross‑Pollination 48h</a>
+        <a href="#seguridad">Seguridad operativa</a>
+        <a href="#export">Exportables</a>
+        <a href="#terreno">Uso en terreno y presentaciones</a>
+        <a href="#capturas">Capturas por módulo (opcional)</a>
+        <a href="#troubleshooting">Problemas comunes</a>
+      </nav>
+    </aside>
+
+    <section class="content hero">
+      <h1>Protocolo Sinapsis V09 — Manual del Usuario</h1>
+      <p>
+        Este manual está pensado para que el usuario <strong>obtenga resultados</strong>: detectar riesgos, priorizar acciones,
+        crear tickets con evidencia y llevar información a comité o a terreno sin perder control.
+      </p>
+      <div class="meta">
+        <button class="btn primary" onclick="document.querySelector('#quickstart').scrollIntoView({behavior:'smooth'})">🚀 Ruta rápida</button>
+        <button class="btn orange" onclick="document.querySelector('#predictivo').scrollIntoView({behavior:'smooth'})">⚠️ Ir a Predictivo</button>
+        <button class="btn" onclick="window.print()">🖨️ Imprimir / PDF</button>
+      </div>
+      <div class="callout">
+        <strong>Idea central:</strong> Datos primero, reglas después, predicción para priorizar, y acciones siempre con evidencia (ticket) y control humano.
+      </div>
+
+      <div class="grid" style="margin-top:14px">
+        <div class="card">
+          <h3>🎯 Objetivo de hoy</h3>
+          <p>Detecta 3 estaciones críticas, crea 3 tickets con evidencia y exporta 1 resumen para comité.</p>
+          <div style="margin-top:10px">
+            <a class="btn primary" href="#quickstart" style="display:inline-flex">🚀 Ir a Ruta rápida</a>
+          </div>
+        </div>
+        <div class="card">
+          <h3>⚡ Flujo recomendado</h3>
+          <p>KPI (qué pasa) → Predictivo/MTBF (qué se viene) → Ticket (qué hacemos) → Export (qué reportamos).</p>
+        </div>
+        <div class="card">
+          <h3>✅ Checklist rápido</h3>
+          <p>Mapa OK · Riesgo OK · MTBF OK · Tickets OK · Export OK (si falla uno, no improvises 😄).</p>
+        </div>
+        <div class="card">
+          <h3>🧭 Tip de control</h3>
+          <p>Zoom en mapas: <b>Ctrl</b> + rueda dentro del mapa. Así no se mueve toda la página.</p>
+        </div>
+      </div>
+
+    </section>
+
+    <section id="quickstart">
+      <div class="sec-title">
+        <h2>🚀 Ruta rápida para obtener resultados (10 minutos)</h2>
+        <span class="tag">Objetivo: salir con tickets y prioridades</span>
+      </div>
+      <p class="lead">
+        Esta ruta es la que funciona en industria cuando hay que “mostrar valor” rápido: monitoreo → riesgo → MTBF → ticket → reporte.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <h3>✅ Resultado esperado</h3>
+          <p>Lista de estaciones críticas, una prioridad por comuna, y tickets creados con razones claras.</p>
+        </div>
+        <div class="card">
+          <h3>🧠 Qué necesitas</h3>
+          <p>Acceso a la plataforma, internet para tiles del mapa, y 1–2 comunas de foco para la demo.</p>
+        </div>
+      </div>
+
+      <ol class="steps">
+        <li><strong>Home</strong> → verifica que la plataforma está “viva” y navega bien.</li>
+        <li><strong>EV Ops Carga</strong> → filtra por comuna y revisa estados en el mapa.</li>
+        <li><strong>Monitor Predictivo</strong> → clic en <span class="kbd">Escanear ahora</span> para generar riesgo.</li>
+        <li><strong>MTBF</strong> → mira las 3 estaciones con MTBF más bajo (probables próximas fallas).</li>
+        <li><strong>Ticket</strong> → crea 1 ticket por estación crítica (con evidencia: V↓, A↑, μC, cola).</li>
+        <li><strong>Export</strong> → exporta JSON/Reporte para comité o seguimiento.</li>
+      </ol>
+
+      <div class="callout orange">
+        <strong>Tip de reunión:</strong> no muestres “toda la ciudad” primero. Parte por 1 comuna, obtén 1 hallazgo, crea 1 ticket. Después escalas.
+      </div>
+    </section>
+
+    <section id="nomenclaturas">
+      <div class="sec-title">
+        <h2>🔤 Nomenclaturas (para leer la plataforma sin dudas)</h2>
+        <span class="tag">Uso: operación + comité</span>
+      </div>
+      <p class="lead">
+        Si un concepto se entiende, se decide rápido. Estas unidades aparecen en EV Ops, Predictivo, Data Hub y reportes.
+      </p>
+
+      <div class="grid">
+        <div class="card"><h3>⚡ kW</h3><p>Potencia del cargador. Referencia típica: 7–22 kW (media) · 50–60+ kW (rápida).</p></div>
+        <div class="card"><h3>🔌 V (volt)</h3><p>Voltaje. Caídas repetidas suelen anticipar problema eléctrico, conexión o alimentación.</p></div>
+        <div class="card"><h3>🧲 A (ampere)</h3><p>Corriente. Picos anómalos pueden anticipar sobrecarga, conector o electrónica.</p></div>
+        <div class="card"><h3>⚠️ Riesgo (0–100)</h3><p>Índice de prioridad. No es “verdad absoluta”, es una guía para decidir orden de revisión.</p></div>
+        <div class="card"><h3>⏱️ MTBF</h3><p>Tiempo promedio entre fallas. Útil para planificación preventiva (cuadrillas, agenda, repuestos).</p></div>
+        <div class="card"><h3>🧪 μC</h3><p>Microcortes. Cortes breves que dañan continuidad y pueden preceder una caída mayor.</p></div>
+      </div>
+
+      <div class="callout">
+        <strong>Lectura simple:</strong> Riesgo alto + MTBF bajo = “revisar primero”. Riesgo medio + MTBF alto = “monitorear”.
+      </div>
+    </section>
+
+    <section id="home">
+      <div class="sec-title">
+        <h2>🏠 Módulo Home</h2>
+        <span class="tag">Uso: apertura + control</span>
+      </div>
+      <p class="lead">
+        En industria, Home se usa como “pantalla de apertura”: confirma que la plataforma está estable y lista para operar o para presentar.
+      </p>
+
+      <div class="grid">
+        <div class="card"><h3>Qué resuelve</h3><p>Te da confianza inicial: navegación, carga de módulos y persistencia funcionando.</p></div>
+        <div class="card"><h3>Qué obtienes</h3><p>Un punto de partida claro para ir directo a operación (EV Ops) o priorización (Predictivo).</p></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="badge"><span class="dot"></span> Cómo usar (paso a paso)</div>
+      <ol class="steps">
+        <li>Abre Home y verifica que no hay pantallas en blanco.</li>
+        <li>Confirma que puedes navegar a EV Ops, Predictivo y Data Hub.</li>
+        <li>Si vas a presentar, deja Home listo y abre EV Ops en la siguiente vista.</li>
+      </ol>
+
+      <div class="callout">
+        <strong>Buenas prácticas:</strong> Home es “cero fricción”. Si algo falla aquí, lo verás antes de la reunión y no en plena demo.
+      </div>
+    </section>
+
+    <section id="proyectos">
+      <div class="sec-title">
+        <h2>🎯 Proyectos & Tareas</h2>
+        <span class="tag">Uso: acción + trazabilidad</span>
+      </div>
+      <p class="lead">
+        Este módulo convierte diagnóstico en acción. En industria, evita que el hallazgo “se pierda” y deja un rastro auditable (qué, por qué, cuándo).
+      </p>
+
+      <div class="grid">
+        <div class="card"><h3>Entradas</h3><p>Tickets desde EV Ops / Predictivo, contexto de estación y razones (V↓, A↑, μC, cola).</p></div>
+        <div class="card"><h3>Salidas</h3><p>Tareas priorizadas y trazables: To‑do → Doing → Done.</p></div>
+        <div class="card"><h3>Características clave</h3><p>Creación rápida, estados claros, y foco en evidencia. Sin ruido.</p></div>
+        <div class="card"><h3>Uso industrial típico</h3><p>Backlog de mantenimiento, comité semanal, control de SLA y priorización de cuadrillas.</p></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="badge"><span class="dot"></span> Cómo usar (paso a paso)</div>
+      <ol class="steps">
+        <li>Crea un proyecto (ej: “EV Ops” o “Terreno Semana 2”).</li>
+        <li>Desde EV Ops o Predictivo, crea un ticket: llega como tarea con contexto.</li>
+        <li>Marca <strong>Doing</strong> cuando alguien toma el caso.</li>
+        <li>Cierra como <strong>Done</strong> con nota breve de resolución.</li>
+      </ol>
+
+      <div class="callout orange">
+        <strong>Error común:</strong> crear tickets sin “razón”. Regla: cada ticket debe tener al menos 1 evidencia clara (V↓ o A↑ o μC o cola).
+      </div>
+    </section>
+
+    <section id="evops">
+      <div class="sec-title">
+        <h2>⚡ EV Ops Carga</h2>
+        <span class="tag">Uso: operación diaria</span>
+      </div>
+      <p class="lead">
+        EV Ops es la vista operativa: muestra estaciones en el mapa con estados. En industria, se usa para entender “qué está pasando ahora”
+        y dónde hay impacto para usuarios o continuidad.
+      </p>
+
+      <div class="grid">
+        <div class="card"><h3>Entradas</h3><p>Ubicación (lat/lng), comuna, estado (disponible/cola/fuera), potencia (kW), señales base.</p></div>
+        <div class="card"><h3>Resultados</h3><p>Mapa claro, foco por comuna, detección visual de puntos críticos y creación de ticket.</p></div>
+        <div class="card"><h3>Características</h3><p>Filtro por comuna, búsqueda, mapa estable y zoom controlado para presentaciones.</p></div>
+        <div class="card"><h3>Uso industrial típico</h3><p>Operación diaria, turnos, monitoreo de continuidad y decisiones rápidas en terreno.</p></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="badge"><span class="dot"></span> Cómo usar (paso a paso)</div>
+      <ol class="steps">
+        <li>Entra a EV Ops y selecciona una comuna (o “Ciudad”).</li>
+        <li>Revisa los colores del mapa y los puntos con estado crítico.</li>
+        <li>Haz zoom con <span class="kbd">Ctrl</span> + rueda para no mover toda la página.</li>
+        <li>Haz click en una estación crítica para ver detalles.</li>
+        <li>Crea ticket si el estado/cola lo justifica (queda trazado en tareas).</li>
+      </ol>
+
+      <div class="callout">
+        <strong>Interpretación rápida:</strong> EV Ops te dice “qué pasa ahora”. Predictivo te dice “qué puede empeorar pronto”.
+      </div>
+    </section>
+
+    <section id="predictivo">
+      <div class="sec-title">
+        <h2>⚠️ Monitor Predictivo (Riesgo)</h2>
+        <span class="tag">Uso: prevenir y priorizar</span>
+      </div>
+      <p class="lead">
+        Predictivo prioriza. En industria, se usa para anticipar fallas y ordenar inspecciones antes de que la estación caiga.
+        La clave: se basa en señales medibles (no en “corazonadas”).
+      </p>
+
+      <div class="grid">
+        <div class="card"><h3>Entradas</h3><p>Señales 24h (V↓, A↑, μC), estado, cola, ocupación, histórico local.</p></div>
+        <div class="card"><h3>Resultados</h3><p>Riesgo por estación, ranking de criticidad, mapa con colores y tickets accionables.</p></div>
+        <div class="card"><h3>Características</h3><p>Botón <strong>Escanear ahora</strong>, lista top, razones claras y “solo lectura”.</p></div>
+        <div class="card"><h3>Uso industrial típico</h3><p>Mantenimiento preventivo, priorización de cuadrillas, reducción de downtime en horas peak.</p></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="badge"><span class="dot"></span> Cómo usar (paso a paso)</div>
+      <ol class="steps">
+        <li>Entra a Predictivo y presiona <strong>Escanear ahora</strong>.</li>
+        <li>Revisa el ranking de riesgo (alto → medio → bajo).</li>
+        <li>Abre la estación con riesgo alto y mira las razones (V↓/A↑/μC/cola).</li>
+        <li>Si corresponde, crea ticket directo desde el panel.</li>
+        <li>Si hay muchas estaciones, prioriza 1 comuna por turno (menos ruido, más acción).</li>
+      </ol>
+
+      <div class="callout orange">
+        <strong>Regla anti‑“alarma decorativa”:</strong> si el riesgo no viene con razones claras, no se crea ticket. Primero evidencia.
+      </div>
+    </section>
+
+    <section id="mtbf">
+      <div class="sec-title">
+        <h2>⏱️ MTBF (Resiliencia energética)</h2>
+        <span class="tag">Uso: planificación</span>
+      </div>
+      <p class="lead">
+        MTBF te ayuda a planificar: “cuánto tiempo, en promedio, falta para la próxima falla”. En industria, esto ordena mantenimiento,
+        agenda y repuestos, especialmente cuando el sistema crece.
+      </p>
+
+      <div class="grid">
+        <div class="card"><h3>Qué muestra</h3><p>MTBF y una ventana probable (rango) por estación. También MTBF agregado por comuna.</p></div>
+        <div class="card"><h3>Cómo se usa</h3><p>Para decidir si hoy revisas “las 3 peores” o si monitoreas y actúas mañana.</p></div>
+        <div class="card"><h3>Criterios de falla</h3><p>Offline sostenido, μC repetidos, V↓ alta, A↑ alta (según histórico de la estación).</p></div>
+        <div class="card"><h3>Personalización</h3><p>Umbrales por estación: aprende su comportamiento normal y reduce falsos positivos.</p></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="badge"><span class="dot"></span> Cómo usar (paso a paso)</div>
+      <ol class="steps">
+        <li>En Predictivo, ubica la estación con riesgo alto y abre su MTBF.</li>
+        <li>Si MTBF es bajo, crea ticket y agenda revisión pronto.</li>
+        <li>Si MTBF es medio, crea tarea de monitoreo con fecha.</li>
+        <li>Si MTBF es alto, deja en observación y revisa KPI de demanda/cola.</li>
+      </ol>
+
+      <div class="callout">
+        <strong>Interpretación simple:</strong> MTBF no es certeza, es planificación. Sirve para decidir “qué hacemos primero” con menos discusión.
+      </div>
+    </section>
+
+    <section id="datahub">
+      <div class="sec-title">
+        <h2>🧩 EV Data Hub</h2>
+        <span class="tag">Uso: origen de verdad</span>
+      </div>
+      <p class="lead">
+        Data Hub centraliza el catálogo y alimenta al resto. En industria, es el lugar donde se define la consistencia:
+        si aquí el dato está limpio, en toda la plataforma se entiende igual.
+      </p>
+
+      <div class="grid">
+        <div class="card"><h3>Entradas</h3><p>Catálogo: nombre/ubicación, comuna, lat/lng, potencia (kW), metadatos.</p></div>
+        <div class="card"><h3>Resultados</h3><p>Vista consolidada, selección de estación, y base para exportables.</p></div>
+        <div class="card"><h3>Características</h3><p>Nombres limpios, navegación estable y preparación para conectar fuente real.</p></div>
+        <div class="card"><h3>Uso industrial típico</h3><p>Gobierno de datos, auditoría, integración con fuentes oficiales y consistencia entre áreas.</p></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="badge"><span class="dot"></span> Cómo usar (paso a paso)</div>
+      <ol class="steps">
+        <li>Entra a Data Hub y busca una estación por comuna o nombre.</li>
+        <li>Abre su contexto: verifica lat/lng y potencia.</li>
+        <li>Desde aquí puedes saltar a EV Ops o Predictivo para operación/priorización.</li>
+      </ol>
+
+      <div class="callout orange">
+        <strong>Buenas prácticas:</strong> define un “contrato” mínimo de datos: estado, V, A, cola, ocupación, timestamp. Todo lo demás es extra.
+      </div>
+    </section>
+
+    <section id="kpi">
+      <div class="sec-title">
+        <h2>📊 KPI Analytics</h2>
+        <span class="tag">Uso: comité y SLA</span>
+      </div>
+      <p class="lead">
+        KPI es la vista ejecutiva: “cómo vamos”. En industria, se usa para comité, SLA, inversión y decisiones de expansión.
+      </p>
+
+      <div class="grid">
+        <div class="card"><h3>Qué muestra</h3><p>Uptime, fuera de servicio, demanda/cola y tendencias de operación.</p></div>
+        <div class="card"><h3>Cómo se usa</h3><p>Para contar la historia: hoy (KPI) y mañana (Predictivo/MTBF).</p></div>
+        <div class="card"><h3>Resultado</h3><p>Decisiones: priorización, presupuesto, cambios de operación y medición de impacto.</p></div>
+        <div class="card"><h3>Uso industrial típico</h3><p>Comité semanal, revisión de SLA y justificación de acciones correctivas.</p></div>
+      </div>
+
+      <div class="callout">
+        <strong>Guion recomendado:</strong> KPI (qué pasa) → Predictivo/MTBF (qué se viene) → Tickets (qué hacemos).
+      </div>
+    </section>
+
+    <section id="cache">
+      <div class="sec-title">
+        <h2>🗄️ Sinapsis Neural Cache</h2>
+        <span class="tag">Uso: rendimiento estable</span>
+      </div>
+      <p class="lead">
+               Cuando el sistema crece, el rendimiento se protege. Este módulo mantiene localStorage liviano: guarda lo necesario y limpia lo viejo.
+      </p>
+
+      <div class="grid">
+        <div class="card"><h3>Qué hace</h3><p>Compresión simple, límites por tamaño y limpieza automática de historial antiguo.</p></div>
+        <div class="card"><h3>Qué obtienes</h3><p>Plataforma fluida incluso con muchas estaciones y tareas.</p></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="badge"><span class="dot"></span> Cómo se usa (paso a paso)</div>
+      <ol class="steps">
+        <li>En uso normal, no haces nada: opera solo.</li>
+        <li>Si notas lentitud, exporta y limpia datos antiguos (opción recomendada por comité/operación).</li>
+      </ol>
+
+      <div class="callout">
+        <strong>Regla simple:</strong> guarda “decisiones y evidencias”, no guardes “ruido infinito”.
+      </div>
+    </section>
+
+    <section id="crosspoll">
+      <div class="sec-title">
+        <h2>🔁 Cross‑Pollination 48h (con botón Autorizar)</h2>
+        <span class="tag">Uso: romper loops</span>
+      </div>
+      <p class="lead">
+        Si una tarea se estanca (Doing &gt; 48h), el sistema sugiere derivarla a un especialista de debug. En industria, esto reduce estancamientos
+        y acelera resolución, pero siempre con control humano.
+      </p>
+
+      <div class="grid">
+        <div class="card"><h3>Detección</h3><p>Marca tareas Doing con antigüedad superior a 48 horas.</p></div>
+        <div class="card"><h3>Autorizar</h3><p>Botón de autorización: sin click, no hay cambio.</p></div>
+        <div class="card"><h3>Contexto</h3><p>Envía resumen: estación, riesgo, razones, intentos previos, timestamps.</p></div>
+        <div class="card"><h3>Resultado</h3><p>Menos loop y más resolución. Queda registro para auditoría.</p></div>
+      </div>
+
+      <div class="callout orange">
+        <strong>Uso recomendado:</strong> aplica Cross‑Pollination cuando la tarea no avanza y ya se probó lo básico. No antes.
+      </div>
+    </section>
+
+    <section id="seguridad">
+      <div class="sec-title">
+        <h2>🛡️ Seguridad operativa (ética y control)</h2>
+        <span class="tag">Uso: confianza</span>
+      </div>
+      <p class="lead">
+        Protocolo Sinapsis recomienda y organiza. No ejecuta acciones críticas automáticamente. En industria, esta regla evita incidentes y mantiene confianza.
+      </p>
+
+      <div class="grid">
+        <div class="card"><h3>Solo lectura</h3><p>No desconecta, no reinicia, no “manda” sobre infraestructura.</p></div>
+        <div class="card"><h3>Evidencia primero</h3><p>Los tickets siempre deben incluir razones observables.</p></div>
+        <div class="card"><h3>Autorización explícita</h3><p>Cross‑Pollination y cambios de flujo requieren botón Autorizar.</p></div>
+        <div class="card"><h3>Privacidad</h3><p>Persistencia mínima en localStorage. Exportables controlados.</p></div>
+      </div>
+
+      <div class="callout">
+        <strong>Regla de oro:</strong> si una recomendación puede generar riesgo operacional, debe pasar por revisión humana.
+      </div>
+    </section>
+
+    <section id="export">
+      <div class="sec-title">
+        <h2>⬇️ Exportables (comité, auditoría, seguimiento)</h2>
+        <span class="tag">Uso: reportar y cerrar ciclos</span>
+      </div>
+      <p class="lead">
+        Exportar permite compartir resultados sin depender de la interfaz. En industria, esto es clave para comité semanal, auditoría y SLA.
+      </p>
+
+      <div class="grid">
+        <div class="card"><h3>Qué exportar</h3><p>Estaciones, estados, riesgo/MTBF, tickets y timestamps.</p></div>
+        <div class="card"><h3>Qué obtienes</h3><p>Un archivo verificable para comité y seguimiento, con trazabilidad.</p></div>
+        <div class="card"><h3>Uso típico</h3><p>Reporte semanal: “top 10 riesgos”, “top 5 MTBF bajos”, “tickets creados y cerrados”.</p></div>
+        <div class="card"><h3>Buenas prácticas</h3><p>Exporta y luego cierra tareas. El reporte se vuelve “historial de decisiones”.</p></div>
+      </div>
+
+      <div class="callout orange">
+        <strong>Evita el caos:</strong> no exportes “todo siempre”. Exporta lo que sirve para decidir: top críticos + tickets + resumen por comuna.
+      </div>
+    </section>
+
+    <section id="terreno">
+      <div class="sec-title">
+        <h2>🧰 Uso en terreno y presentaciones (modo ejecutivo)</h2>
+        <span class="tag">Uso: demo sin sorpresas</span>
+      </div>
+      <p class="lead">
+        En terreno o en cliente, lo importante es estabilidad. Estas prácticas evitan problemas típicos de mapa y navegación.
+      </p>
+
+      <div class="grid">
+        <div class="card"><h3>Abrir correctamente</h3><p>Recomendado: servidor local. Evita abrir con <span class="kbd">file://</span>.</p></div>
+        <div class="card"><h3>Comando</h3><p><span class="kbd">python3 -m http.server 8000</span> y abre <span class="kbd">http://localhost:8000/</span></p></div>
+        <div class="card"><h3>Zoom sin “saltos”</h3><p>Usa <span class="kbd">Ctrl</span> + rueda dentro del mapa.</p></div>
+        <div class="card"><h3>Conectividad</h3><p>OSM necesita internet para tiles. Sin red, verás paneles pero no el mapa base.</p></div>
+      </div>
+
+      <div class="callout">
+        <strong>Guion de 3 minutos:</strong> EV Ops (situación) → Predictivo/MTBF (prioridad) → Ticket (acción). Corta y contundente.
+      </div>
+    </section>
+
+    
+    <section id="capturas">
+      <div class="sec-title">
+        <h2>📸 Capturas por módulo (opcional, súper útil para entrenamiento)</h2>
+        <span class="tag">Uso: onboarding y manual “real”</span>
+      </div>
+      <p class="lead">
+        Si cada módulo tiene 1 captura real, el manual deja de ser “bonito” y se vuelve operativo. Aquí puedes cargar imágenes desde tu computador.
+        Quedan guardadas en tu navegador (localStorage) para que el manual sea tuyo.
+      </p>
+
+      <div class="grid" id="shotsGrid">
+        <!-- se llena con JS -->
+      </div>
+
+      <div class="callout orange">
+        <strong>Tip de consistencia:</strong> usa capturas en la misma resolución, con la misma comuna seleccionada, y sin datos sensibles.
+      </div>
+    </section>
+
+
+    <section id="troubleshooting">
+      <div class="sec-title">
+        <h2>🧯 Problemas comunes (y cómo solucionarlos)</h2>
+        <span class="tag">Uso: rescate rápido</span>
+      </div>
+      <p class="lead">
+        Si algo falla, aplica este checklist. Es más rápido que “reinventar la rueda” en plena reunión.
+      </p>
+
+      <div class="grid">
+        <div class="card"><h3>🗺️ No se ve el mapa</h3><p>Verifica internet. Si abriste como <span class="kbd">file://</span>, usa servidor local.</p></div>
+        <div class="card"><h3>⚫ Pantalla en blanco</h3><p>Abre consola (F12). Revisa el primer error. Suele ser un recurso bloqueado o JS detenido.</p></div>
+        <div class="card"><h3>🧭 No navega bien</h3><p>Refresca (Ctrl+R). Si persiste, limpia localStorage y vuelve a entrar.</p></div>
+        <div class="card"><h3>🐭 La rueda mueve toda la página</h3><p>Usa <span class="kbd">Ctrl</span> + rueda para zoom en mapa (modo seguro).</p></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="foot">
+        Confidencial · <span style="color:var(--blue);font-weight:1000">Activa</span> <span style="color:var(--orange);font-weight:1000">Consultores</span> · Protocolo Sinapsis V09
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // 🔎 filtro del menú
+    (function(){
+      const input = document.getElementById('navSearch');
+      const links = Array.from(document.querySelectorAll('#nav a'));
+
+      function norm(s){
+        return (s||'')
+          .toLowerCase()
+          .normalize('NFD')
+          .replace(/\p{Diacritic}/gu,'')
+          .replace(/\s+/g,' ')
+          .trim();
+      }
+      input.addEventListener('input', () => {
+        const q = norm(input.value);
+        links.forEach(a => {
+          const t = norm(a.textContent);
+          a.style.display = (!q || t.includes(q)) ? 'block' : 'none';
+        });
+      });
+    })();
+
+    // ✅ marca activo en el menú por scroll
+    (function(){
+      const links = Array.from(document.querySelectorAll('#nav a'));
+      const sections = links
+        .map(a => document.querySelector(a.getAttribute('href')))
+        .filter(Boolean);
+
+      function setActive(hash){
+        links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === hash));
+      }
+      links.forEach(a => a.addEventListener('click', () => setActive(a.getAttribute('href'))));
+
+      const io = new IntersectionObserver((entries) => {
+        const best = entries
+          .filter(e => e.isIntersecting)
+          .sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
+        if(!best) return;
+        setActive('#' + best.target.id);
+      }, { threshold: [0.18, 0.28, 0.40, 0.55] });
+
+      sections.forEach(s => io.observe(s));
+      setActive('#quickstart');
+    })();
+  </script>
+
+  <script>
+    // 📸 Capturas por módulo: guarda imágenes en localStorage (en este navegador)
+    (function(){
+      const modules = [
+        {id:'home', name:'Home'},
+        {id:'proyectos', name:'Proyectos & Tareas'},
+        {id:'evops', name:'EV Ops Carga'},
+        {id:'predictivo', name:'Monitor Predictivo'},
+        {id:'mtbf', name:'MTBF'},
+        {id:'datahub', name:'EV Data Hub'},
+        {id:'kpi', name:'KPI Analytics'},
+        {id:'cache', name:'Sinapsis Neural Cache'},
+        {id:'crosspoll', name:'Cross‑Pollination 48h'},
+      ];
+
+      const key = (mid)=> 'ps_v09_manual_shot_' + mid;
+
+      function read(mid){
+        try{ return localStorage.getItem(key(mid)) || ''; }catch(e){ return ''; }
+      }
+      function write(mid, val){
+        try{ localStorage.setItem(key(mid), val); }catch(e){}
+      }
+      function clear(mid){
+        try{ localStorage.removeItem(key(mid)); }catch(e){}
+      }
+
+      function box(m){
+        const wrapper = document.createElement('div');
+        wrapper.className = 'shotbox';
+        wrapper.innerHTML = `
+          <div class="row">
+            <div>
+              <div class="title">📌 ${m.name}</div>
+              <div class="small">Recomendado: 1 captura clara, sin datos sensibles.</div>
+            </div>
+            <div class="shot-actions">
+              <label class="mini" title="Cargar imagen">
+                ⬆️ Cargar
+                <input type="file" accept="image/*" data-mid="${m.id}" style="display:none" />
+              </label>
+              <button class="mini danger" data-clear="${m.id}" title="Borrar captura">🧽 Borrar</button>
+            </div>
+          </div>
+          <img alt="Captura ${m.name}" data-img="${m.id}" />
+        `;
+        return wrapper;
+      }
+
+      function setImg(mid, dataUrl){
+        const img = document.querySelector(`[data-img="${mid}"]`);
+        if(!img) return;
+        if(dataUrl){
+          img.src = dataUrl;
+          img.style.display = 'block';
+        }else{
+          img.removeAttribute('src');
+          img.style.display = 'none';
+        }
+      }
+
+      function init(){
+        const grid = document.getElementById('shotsGrid');
+        if(!grid) return;
+        grid.innerHTML = '';
+        modules.forEach(m => grid.appendChild(box(m)));
+
+        // cargar guardadas
+        modules.forEach(m => setImg(m.id, read(m.id)));
+
+        grid.addEventListener('change', (ev) => {
+          const inp = ev.target;
+          if(!(inp instanceof HTMLInputElement)) return;
+          if(inp.type !== 'file') return;
+          const mid = inp.dataset.mid;
+          const file = inp.files && inp.files[0];
+          if(!mid || !file) return;
+
+          if(file.size > 1500 * 1024){
+            alert('Esta imagen es grande. Recomendado: exportar en ancho 1200–1600 px para que el manual siga liviano.');
+          }
+
+          const reader = new FileReader();
+          reader.onload = () => {
+            const dataUrl = String(reader.result || '');
+            write(mid, dataUrl);
+            setImg(mid, dataUrl);
+            inp.value = '';
+          };
+          reader.readAsDataURL(file);
+        });
+
+        grid.addEventListener('click', (ev) => {
+          const btn = ev.target.closest('button[data-clear]');
+          if(!btn) return;
+          const mid = btn.getAttribute('data-clear');
+          if(!mid) return;
+          clear(mid);
+          setImg(mid, '');
+        });
+      }
+
+      if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', init);
+      }else{
+        init();
+      }
+    })();
+  </script>
+
+</body>
+</html>
